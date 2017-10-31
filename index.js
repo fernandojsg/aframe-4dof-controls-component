@@ -8,44 +8,67 @@ if (typeof AFRAME === 'undefined') {
  * 4dof Controls component for A-Frame.
  */
 AFRAME.registerComponent('4dof-controls', {
-  schema: {},
+  schema: {
+    minAngle: {default: 0},
+    maxAngle: {default: 115},
+    length: {default: 2},
+    events: {type: 'array'},
+    target: {type: 'selector'}
+  },
 
-  /**
-   * Set if component needs multiple instancing.
-   */
   multiple: false,
 
-  /**
-   * Called once when component is attached. Generally for initial setup.
-   */
-  init: function () { },
+  init: function () {
+    var dstEl;
+    var self = this;
+    var el = this.el;
 
-  /**
-   * Called when component is attached and when component data changes.
-   * Generally modifies the entity based on the data.
-   */
-  update: function (oldData) { },
+    dstEl = this.targetEl = this.data.targetEl || el.firstElementChild;
 
-  /**
-   * Called when a component is removed (e.g., via removeAttribute).
-   * Generally undoes all modifications to the entity.
-   */
+    this.controlledConnected = false;
+    this.handMultiplier = 1;
+
+    el.addEventListener('controllerconnected', function (evt) {
+      self.handMultiplier = evt.detail.component.data.hand === 'left' ? 1 : -1;
+      self.controlledConnected = true;
+    });
+
+    this.prevRoll = undefined;
+    if (this.data.events.length > 0) {
+      for (var i = 0; i < this.data.events.length; i++) {
+        var eventName = this.data.events[i];
+        el.addEventListener(eventName, (function (eventName) {
+          return function (evt) {
+            dstEl.emit(eventName, evt, false);
+          };
+        })(eventName));
+      }
+    }
+  },
+
+  update: function () {
+    this.minAngleRad = this.data.minAngle * THREE.Math.DEG2RAD;
+    this.maxAngleRad = this.data.maxAngle * THREE.Math.DEG2RAD;
+    this.angleRangeRad = this.maxAngleRad - this.minAngleRad;
+  },
+
   remove: function () { },
 
-  /**
-   * Called on each scene tick.
-   */
-  // tick: function (t) { },
+  tick: function () {
+    if (!this.controlledConnected) {
+      return;
+    }
 
-  /**
-   * Called when entity pauses.
-   * Use to stop or remove any dynamic or background behavior such as events.
-   */
-  pause: function () { },
+    var roll = this.el.object3D.rotation.z;
+    if (roll < this.minAngleRad) {
+      roll = this.minAngleRad;
+    } else if (roll > this.maxAngleRad) {
+      roll = this.maxAngleRad;
+    }
 
-  /**
-   * Called when entity resumes.
-   * Use to continue or add any dynamic or background behavior such as events.
-   */
-  play: function () { }
+    if (roll !== this.prevRoll) {
+      this.targetEl.setAttribute('position', {z: this.handMultiplier * this.data.length * roll / this.angleRangeRad});
+      this.prevRoll = roll;
+    }
+  }
 });

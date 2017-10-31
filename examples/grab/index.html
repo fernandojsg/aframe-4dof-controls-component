@@ -4,13 +4,14 @@
     <meta charset="utf-8">
     <title>Tracked Controls</title>
     <meta name="description" content="Tracked Controls – A-Frame">
-    <script src="aframe-master.js"></script>
-    <script src="proxy_event.js"></script>
-    <script src="keybased-controls.js"></script>
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
     <script src="components/aabb-collider.js"></script>
     <script src="components/grab.js"></script>
     <script src="components/ground.js"></script>
     <script src="shaders/skyGradient.js"></script>
+    <script src="../../dist/aframe-4dof-controls-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-input-mapping-component@0.1.0/dist/aframe-input-mapping-component.min.js"></script>
+    <script src="mappings.js"></script>
   </head>
   <body>
     <a-scene fog="color: #bc483e; near: 0; far: 65;">
@@ -24,8 +25,11 @@
                  material="color: #F2E646;"></a-mixin>
       </a-assets>
       <!-- Hands -->
-      <a-entity id="control" daydream-controls keybased-controls>
-        <a-entity id="hand" aabb-collider="objects: .cube;" grab></a-entity>
+      <a-entity daydream-controls="hand: left" gearvr-controls="hand: left" 4dof-controls="length: 4; events: grab, release">
+        <a-entity aabb-collider="objects: .cube;" grab></a-entity>
+      </a-entity>
+      <a-entity daydream-controls="hand: right" gearvr-controls="hand: right" 4dof-controls="length: 4; events: grab, release">
+        <a-entity aabb-collider="objects: .cube;" grab></a-entity>
       </a-entity>
 
       <!-- A-Frame cubes -->
@@ -68,17 +72,9 @@
       var modelUrl = 'https://cdn.aframe.io/controllers/oculus-hands/v2/leftHand.json';
       var el = document.getElementById('hand');
       this.loader.load(modelUrl, function (scene) {
-        console.log('werqweqewr');
         var mesh = scene.getObjectByName('Hand');
-        mesh.material.skinning = true;
-        mesh.mixer = new THREE.AnimationMixer(mesh);
         el.setObject3D('mesh', mesh);
-        mesh.position.set(0, 0, 0);
-        mesh.rotation.set(0, 0, 0);
-        // hidden by default
-        // mesh.visible = false;
       });
-
     </script>
   </body>
 </html>

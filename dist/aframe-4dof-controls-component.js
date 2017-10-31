@@ -64,7 +64,18 @@
 	  /**
 	   * Called once when component is attached. Generally for initial setup.
 	   */
-	  init: function () { },
+	  init: function () {
+	    var dstEl = document.getElementById('hand');
+	    var el = this.el;
+	    /*
+	    el.addEventListener('trackpadup', function(evt) {
+	      dstEl.emit('gripopen', evt, false);
+	    });
+	    el.addEventListener('trackpaddown', function(evt) {
+	      dstEl.emit('gripclose', evt, false);
+	    });
+	    */
+	  },
 
 	  /**
 	   * Called when component is attached and when component data changes.
@@ -89,11 +100,14 @@
 	   */
 	  pause: function () { },
 
-	  /**
-	   * Called when entity resumes.
-	   * Use to continue or add any dynamic or background behavior such as events.
-	   */
-	  play: function () { }
+	  tick: function () {
+	    var diff=0.1;
+	    if (this.el.object3D.rotation.z > 0.1) {
+	      var dstEl = document.getElementById('hand');
+	      dstEl.setAttribute('position',{x:0, y:0, z: 0.1 - this.el.object3D.rotation.z * 2});
+	    }
+	  }
+
 	});
 
 

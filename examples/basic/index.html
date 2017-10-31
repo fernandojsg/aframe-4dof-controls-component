@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>A-Frame 4dof Controls Component - Basic</title>
     <meta name="description" content="Basic example for 4dof Controls component."></meta>
-    <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.7.1/aframe.min.js"></script>
     <script src="../../dist/aframe-4dof-controls-component.min.js"></script>
   </head>
   <body>
@@ -14,7 +14,10 @@
         <img id="skyTexture" src="https://cdn.aframe.io/a-painter/images/sky.jpg">
       </a-assets>
 
-      <a-entity 4dof-controls=""></a-entity>
+      <a-entity geometry="primitive: icosahedron; detail: 0; radius: 0.2" material="color: #f33"></a-entity>
+      <a-entity id="control" daydream-controls 4dof-controls="target: #hand">
+        <a-entity id="hand" geometry="primitive: icosahedron; detail: 0; radius: 0.05" material="color: #f33"></a-entity>
+      </a-entity>
 
       <a-plane src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
       <a-light type="ambient" color="#445451"></a-light>

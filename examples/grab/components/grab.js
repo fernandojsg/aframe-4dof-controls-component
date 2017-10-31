@@ -10,33 +10,30 @@ AFRAME.registerComponent('grab', {
     this.GRABBED_STATE = 'grabbed';
     // Bind event handlers
     this.onHit = this.onHit.bind(this);
-    this.onGripOpen = this.onGripOpen.bind(this);
-    this.onGripClose = this.onGripClose.bind(this);
+    this.onRelease = this.onRelease.bind(this);
+    this.onGrab = this.onGrab.bind(this);
   },
 
   play: function () {
     var el = this.el;
     el.addEventListener('hit', this.onHit);
 
-    el.addEventListener('gripclose', this.onGripClose);
-    el.addEventListener('gripopen', this.onGripOpen);
-
+    el.addEventListener('grab', this.onGrab);
+    el.addEventListener('release', this.onRelease);
   },
 
   pause: function () {
     var el = this.el;
-    el.removeEventListener('trackpaddown', this.onGripClose);
-    el.removeEventListener('trackpadup', this.onGripOpen);
+    el.removeEventListener('grab', this.onGrab);
+    el.removeEventListener('release', this.onRelease);
   },
 
-  onGripClose: function (evt) {
-    console.log('close');
+  onGrab: function (evt) {
     this.grabbing = true;
     delete this.previousPosition;
   },
 
-  onGripOpen: function (evt) {
-    console.log('open');
+  onRelease: function (evt) {
     var hitEl = this.hitEl;
     this.grabbing = false;
     if (!hitEl) { return; }
@@ -69,7 +66,6 @@ AFRAME.registerComponent('grab', {
 
   updateDelta: function () {
     var currentPosition = this.el.object3D.getWorldPosition();
-    console.log(currentPosition, this.el.object3D.position);
     //var currentPosition = this.el.getAttribute('position');
     if (!this.previousPosition) {
       this.previousPosition = new THREE.Vector3();
