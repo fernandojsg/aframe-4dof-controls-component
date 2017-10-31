@@ -11,7 +11,11 @@ For [A-Frame](https://aframe.io).
 
 | Property | Description | Default Value |
 | -------- | ----------- | ------------- |
-|          |             |               |
+| events         | List of events to redirect to the target element. | |
+| length         | Maximum length to move the target element | 2 |
+| maxAngle         | Maximum angle to rotate on Z | 115 |
+| minAngle         | Minimum angle to rotate on Z | 0 |
+| target         | Selector for the target element, if not defined it will default to the first child of the element. |  |
 
 ### Installation
 
@@ -22,13 +26,15 @@ Install and use by directly including the [browser files](dist):
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+  <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-4dof-controls-component/dist/aframe-4dof-controls-component.min.js"></script>
 </head>
 
 <body>
   <a-scene>
-    <a-entity 4dof-controls="foo: bar"></a-entity>
+    <a-entity daydream-controls gearvr-controls 4dof-controls>
+      <a-entity><!-- hand --></a-entity>
+    </a-entity>
   </a-scene>
 </body>
 ```

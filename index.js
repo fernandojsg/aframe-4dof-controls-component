@@ -9,10 +9,10 @@ if (typeof AFRAME === 'undefined') {
  */
 AFRAME.registerComponent('4dof-controls', {
   schema: {
-    minAngle: {default: 0},
-    maxAngle: {default: 115},
-    length: {default: 2},
     events: {type: 'array'},
+    length: {default: 2},
+    maxAngle: {default: 115},
+    minAngle: {default: 0},
     target: {type: 'selector'}
   },
 
@@ -23,7 +23,7 @@ AFRAME.registerComponent('4dof-controls', {
     var self = this;
     var el = this.el;
 
-    dstEl = this.targetEl = this.data.targetEl || el.firstElementChild;
+    dstEl = this.targetEl = this.data.target || el.firstElementChild;
 
     this.controlledConnected = false;
     this.handMultiplier = 1;
