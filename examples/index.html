@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tracked Controls</title>
+    <meta name="description" content="Tracked Controls – A-Frame">
+    <script src="aframe-master.js"></script>
+    <script src="proxy_event.js"></script>
+    <script src="keybased-controls.js"></script>
+    <script src="components/aabb-collider.js"></script>
+    <script src="components/grab.js"></script>
+    <script src="components/ground.js"></script>
+    <script src="shaders/skyGradient.js"></script>
+  </head>
+  <body>
+    <a-scene fog="color: #bc483e; near: 0; far: 65;">
+      <a-assets>
+        <a-mixin id="cube"
+                 geometry="primitive: box; height: 0.30; width: 0.30; depth: 0.30"
+                 material="color: #EF2D5E;"></a-mixin>
+        <a-mixin id="cube-collided"
+                 material="color: #F2E646;"></a-mixin>
+        <a-mixin id="cube-grabbed"
+                 material="color: #F2E646;"></a-mixin>
+      </a-assets>
+      <!-- Hands -->
+      <a-entity id="control" daydream-controls keybased-controls>
+        <a-entity id="hand" aabb-collider="objects: .cube;" grab></a-entity>
+      </a-entity>
+
+      <!-- A-Frame cubes -->
+      <a-entity position="0 0 -1.5">
+        <a-entity class="cube" mixin="cube" position="0.30 1.65 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0 1.95 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.30 1.65 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="0.60 1.35 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 1.05 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.45 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0.60 0.15 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="0.30 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="0 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.30 0.75 0"></a-entity>
+
+        <a-entity class="cube" mixin="cube" position="-0.60 1.35 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 1.05 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.75 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.45 0"></a-entity>
+        <a-entity class="cube" mixin="cube" position="-0.60 0.15 0"></a-entity>
+
+        <!-- Environment -->
+        <a-entity id="sky"
+                  geometry="primitive: sphere; radius: 65;"
+                  material="shader: skyGradient; colorTop: #353449; colorBottom: #BC483E; side: back"></a-entity>
+         <a-entity ground></a-entity>
+         <a-entity light="type: point; color: #f4f4f4; intensity: 0.2; distance: 0" position="8 10 18"></a-entity>
+         <a-entity light="type: point; color: #f4f4f4; intensity: 0.6; distance: 0" position="-8 10 -18"></a-entity>
+         <a-entity light="type: ambient; color: #f4f4f4; intensity: 0.4;" position="-8 10 -18"></a-entity>
+      </a-entity>
+      <a-camera></a-camera>
+
+    </a-scene>
+    <script>
+      var loader = new THREE.ObjectLoader();
+      loader.setCrossOrigin('anonymous');
+      var modelUrl = 'https://cdn.aframe.io/controllers/oculus-hands/v2/leftHand.json';
+      var el = document.getElementById('hand');
+      this.loader.load(modelUrl, function (scene) {
+        console.log('werqweqewr');
+        var mesh = scene.getObjectByName('Hand');
+        mesh.material.skinning = true;
+        mesh.mixer = new THREE.AnimationMixer(mesh);
+        el.setObject3D('mesh', mesh);
+        mesh.position.set(0, 0, 0);
+        mesh.rotation.set(0, 0, 0);
+        // hidden by default
+        // mesh.visible = false;
+      });
+
+    </script>
+  </body>
+</html>
