@@ -54,60 +54,70 @@
 	 * 4dof Controls component for A-Frame.
 	 */
 	AFRAME.registerComponent('4dof-controls', {
-	  schema: {},
-
-	  /**
-	   * Set if component needs multiple instancing.
-	   */
-	  multiple: false,
-
-	  /**
-	   * Called once when component is attached. Generally for initial setup.
-	   */
-	  init: function () {
-	    var dstEl = document.getElementById('hand');
-	    var el = this.el;
-	    /*
-	    el.addEventListener('trackpadup', function(evt) {
-	      dstEl.emit('gripopen', evt, false);
-	    });
-	    el.addEventListener('trackpaddown', function(evt) {
-	      dstEl.emit('gripclose', evt, false);
-	    });
-	    */
+	  schema: {
+	    events: {type: 'array'},
+	    length: {default: 2},
+	    maxAngle: {default: 115},
+	    minAngle: {default: 0},
+	    target: {type: 'selector'}
 	  },
 
-	  /**
-	   * Called when component is attached and when component data changes.
-	   * Generally modifies the entity based on the data.
-	   */
-	  update: function (oldData) { },
+	  multiple: false,
 
-	  /**
-	   * Called when a component is removed (e.g., via removeAttribute).
-	   * Generally undoes all modifications to the entity.
-	   */
+	  init: function () {
+	    var dstEl;
+	    var self = this;
+	    var el = this.el;
+
+	    dstEl = this.targetEl = this.data.target || el.firstElementChild;
+
+	    this.controlledConnected = false;
+	    this.handMultiplier = 1;
+
+	    el.addEventListener('controllerconnected', function (evt) {
+	      self.handMultiplier = evt.detail.component.data.hand === 'left' ? -1 : 1;
+	      self.controlledConnected = true;
+	    });
+
+	    this.prevRoll = undefined;
+	    if (this.data.events.length > 0) {
+	      for (var i = 0; i < this.data.events.length; i++) {
+	        var eventName = this.data.events[i];
+	        el.addEventListener(eventName, (function (eventName) {
+	          return function (evt) {
+	            dstEl.emit(eventName, evt, false);
+	          };
+	        })(eventName));
+	      }
+	    }
+	  },
+
+	  update: function () {
+	    this.minAngleRad = this.data.minAngle * THREE.Math.DEG2RAD;
+	    this.maxAngleRad = this.data.maxAngle * THREE.Math.DEG2RAD;
+	    this.angleRangeRad = this.maxAngleRad - this.minAngleRad;
+	  },
+
 	  remove: function () { },
 
-	  /**
-	   * Called on each scene tick.
-	   */
-	  // tick: function (t) { },
-
-	  /**
-	   * Called when entity pauses.
-	   * Use to stop or remove any dynamic or background behavior such as events.
-	   */
-	  pause: function () { },
-
 	  tick: function () {
-	    var diff=0.1;
-	    if (this.el.object3D.rotation.z > 0.1) {
-	      var dstEl = document.getElementById('hand');
-	      dstEl.setAttribute('position',{x:0, y:0, z: 0.1 - this.el.object3D.rotation.z * 2});
+	    if (!this.controlledConnected) {
+	      return;
+	    }
+
+	    var roll = this.handMultiplier * this.el.object3D.rotation.z;
+
+	    if (roll < this.minAngleRad) {
+	      roll = this.minAngleRad;
+	    } else if (roll > this.maxAngleRad) {
+	      roll = this.maxAngleRad;
+	    }
+
+	    if (roll !== this.prevRoll) {
+	      this.targetEl.setAttribute('position', {z: -this.data.length * roll / this.angleRangeRad});
+	      this.prevRoll = roll;
 	    }
 	  }
-
 	});
 
 

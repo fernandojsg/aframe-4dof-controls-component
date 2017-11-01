@@ -1,6 +1,6 @@
 {
   "name": "aframe-4dof-controls-component",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A 4dof Controls component for A-Frame.",
   "main": "index.js",
   "cdn": "dist/aframe-4dof-controls-component.min.js",
