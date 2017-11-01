@@ -44,6 +44,7 @@ AFRAME.registerComponent('4dof-controls', {
         })(eventName));
       }
     }
+    this.zPosition = {z: 0};
   },
 
   update: function () {
@@ -68,7 +69,8 @@ AFRAME.registerComponent('4dof-controls', {
     }
 
     if (roll !== this.prevRoll) {
-      this.targetEl.setAttribute('position', {z: -this.data.length * roll / this.angleRangeRad});
+      this.zPosition.z = -this.data.length * roll / this.angleRangeRad;
+      this.targetEl.setAttribute('position', this.zPosition);
       this.prevRoll = roll;
     }
   }
