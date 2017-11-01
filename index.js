@@ -25,12 +25,12 @@ AFRAME.registerComponent('4dof-controls', {
 
     dstEl = this.targetEl = this.data.target || el.firstElementChild;
 
-    this.controlledConnected = false;
+    this.controllerConnected = false;
     this.handMultiplier = 1;
 
     el.addEventListener('controllerconnected', function (evt) {
       self.handMultiplier = evt.detail.component.data.hand === 'left' ? -1 : 1;
-      self.controlledConnected = true;
+      self.controllerConnected = true;
     });
 
     this.prevRoll = undefined;
@@ -55,7 +55,7 @@ AFRAME.registerComponent('4dof-controls', {
   remove: function () { },
 
   tick: function () {
-    if (!this.controlledConnected) {
+    if (!this.controllerConnected) {
       return;
     }
 
