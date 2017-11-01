@@ -3,7 +3,7 @@
 [![Version](http://img.shields.io/npm/v/aframe-4dof-controls-component.svg?style=flat-square)](https://npmjs.org/package/aframe-4dof-controls-component)
 [![License](http://img.shields.io/npm/l/aframe-4dof-controls-component.svg?style=flat-square)](https://npmjs.org/package/aframe-4dof-controls-component)
 
-A 4dof Controls component for A-Frame.
+A 4dof Controls component for A-Frame based on the original idea in the [Thinking Beyond a Rotation-Only Controller](https://www.youtube.com/watch?v=7z1xYmJPhI4) talk.
 
 For [A-Frame](https://aframe.io).
 
