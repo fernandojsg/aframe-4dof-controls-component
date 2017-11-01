@@ -15,9 +15,14 @@
       </a-assets>
 
       <a-entity geometry="primitive: icosahedron; detail: 0; radius: 0.2" material="color: #f33"></a-entity>
-      <a-entity id="control" daydream-controls 4dof-controls="target: #hand">
-        <a-entity id="hand" geometry="primitive: icosahedron; detail: 0; radius: 0.05" material="color: #f33"></a-entity>
+
+      <a-entity daydream-controls="left" gearvr-controls="left" 4dof-controls>
+        <a-entity geometry="primitive: icosahedron; detail: 0; radius: 0.05" material="color: #f33"></a-entity>
       </a-entity>
+      <a-entity daydream-controls="right" gearvr-controls="right" 4dof-controls>
+        <a-entity geometry="primitive: icosahedron; detail: 0; radius: 0.05" material="color: #f33"></a-entity>
+      </a-entity>
+
 
       <a-plane src="#groundTexture" rotation="-90 0 0" height="100" width="100"></a-plane>
       <a-light type="ambient" color="#445451"></a-light>

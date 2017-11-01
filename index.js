@@ -29,7 +29,7 @@ AFRAME.registerComponent('4dof-controls', {
     this.handMultiplier = 1;
 
     el.addEventListener('controllerconnected', function (evt) {
-      self.handMultiplier = evt.detail.component.data.hand === 'left' ? 1 : -1;
+      self.handMultiplier = evt.detail.component.data.hand === 'left' ? -1 : 1;
       self.controlledConnected = true;
     });
 
@@ -59,7 +59,8 @@ AFRAME.registerComponent('4dof-controls', {
       return;
     }
 
-    var roll = this.el.object3D.rotation.z;
+    var roll = this.handMultiplier * this.el.object3D.rotation.z;
+
     if (roll < this.minAngleRad) {
       roll = this.minAngleRad;
     } else if (roll > this.maxAngleRad) {
@@ -67,7 +68,7 @@ AFRAME.registerComponent('4dof-controls', {
     }
 
     if (roll !== this.prevRoll) {
-      this.targetEl.setAttribute('position', {z: this.handMultiplier * this.data.length * roll / this.angleRangeRad});
+      this.targetEl.setAttribute('position', {z: -this.data.length * roll / this.angleRangeRad});
       this.prevRoll = roll;
     }
   }

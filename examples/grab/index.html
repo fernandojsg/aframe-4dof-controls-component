@@ -8,6 +8,7 @@
     <script src="components/aabb-collider.js"></script>
     <script src="components/grab.js"></script>
     <script src="components/ground.js"></script>
+    <script src="components/hand-model.js"></script>
     <script src="shaders/skyGradient.js"></script>
     <script src="../../dist/aframe-4dof-controls-component.min.js"></script>
     <script src="https://unpkg.com/aframe-input-mapping-component@0.1.0/dist/aframe-input-mapping-component.min.js"></script>
@@ -25,15 +26,16 @@
                  material="color: #F2E646;"></a-mixin>
       </a-assets>
       <!-- Hands -->
+
       <a-entity daydream-controls="hand: left" gearvr-controls="hand: left" 4dof-controls="length: 4; events: grab, release">
-        <a-entity aabb-collider="objects: .cube;" grab></a-entity>
+        <a-entity hand-model="left" aabb-collider="objects: .cube;" grab></a-entity>
       </a-entity>
       <a-entity daydream-controls="hand: right" gearvr-controls="hand: right" 4dof-controls="length: 4; events: grab, release">
-        <a-entity aabb-collider="objects: .cube;" grab></a-entity>
+        <a-entity hand-model="right" aabb-collider="objects: .cube;" grab></a-entity>
       </a-entity>
 
       <!-- A-Frame cubes -->
-      <a-entity position="0 0 -1.5">
+      <a-entity position="0 0 -2.5">
         <a-entity class="cube" mixin="cube" position="0.30 1.65 0"></a-entity>
         <a-entity class="cube" mixin="cube" position="0 1.95 0"></a-entity>
         <a-entity class="cube" mixin="cube" position="-0.30 1.65 0"></a-entity>
@@ -66,15 +68,5 @@
       <a-camera></a-camera>
 
     </a-scene>
-    <script>
-      var loader = new THREE.ObjectLoader();
-      loader.setCrossOrigin('anonymous');
-      var modelUrl = 'https://cdn.aframe.io/controllers/oculus-hands/v2/leftHand.json';
-      var el = document.getElementById('hand');
-      this.loader.load(modelUrl, function (scene) {
-        var mesh = scene.getObjectByName('Hand');
-        el.setObject3D('mesh', mesh);
-      });
-    </script>
   </body>
 </html>
