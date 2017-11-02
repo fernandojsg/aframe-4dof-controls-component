@@ -7,7 +7,7 @@ A 4dof Controls component for A-Frame based on the original idea in the [Thinkin
 
 For [A-Frame](https://aframe.io).
 
-<a href="/fernandojsg/aframe-4dof-controls-component/blob/master/readme_files/4dof.gif" target="_blank"><img src="/fernandojsg/aframe-4dof-controls-component/blob/master/readme_files/4dof.gif?raw=true" alt="aframe-4dof-controls-component in action" style="max-width:100%;"></a>
+<a href="https://github.com/fernandojsg/aframe-4dof-controls-component/blob/master/readme_files/4dof.gif" target="_blank"><img src="https://github.com/fernandojsg/aframe-4dof-controls-component/blob/master/readme_files/4dof.gif" alt="aframe-4dof-controls-component in action" style="max-width:100%;"></a>
 
 ### API
 
